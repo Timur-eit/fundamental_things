@@ -7,22 +7,21 @@ let myMap = {
 myMap.put = function(key, value) {
   const id = getHash(key);
   const inner = [key, value];
-  
+
   if (id in myMap) {
     myMap[id].push(inner);
   } else {
     myMap[id] = [inner]; // else ??
-  }  
+  }
 };
 
 myMap.get = function(key) {
-  const id = getHash(key);  
-  if (id in myMap) {
-    return getValue(myMap[id], key);    
+  const id = getHash(key);
+  if (id in myMap) {    
+    return myMap[id].reduce((_, current) => current[0] === key ? current[1] : undefined, '');
   }
   return null;
 };
-
 
 function getHash(str) {
   let hash = '';
@@ -32,20 +31,14 @@ function getHash(str) {
   return Number(hash) % 1e6;
 }
 
-function getValue(arr, key) {
-  for (let i = 0; i < arr.length; i++) {
-    if (arr[i][0] === key) {
-      return arr[i][1];
-    }    
-  }
-}
-
-
-
 
 myMap.put('Arsentiy', '+11111');
 myMap.put('Evgeny', '+33333');
+myMap.put('Bob', '+44444');
+
+// console.log(myMap);
 
 console.log(myMap.get('Arsentiy')); // => +11111
 console.log(myMap.get('Evgeny')); // => +33333
+console.log(myMap.get('Bob')); // => +44444
 console.log(myMap.get('Willy')); // => null
