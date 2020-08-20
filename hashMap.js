@@ -4,14 +4,6 @@ let myMap = {
   121472: [['Bob', '+13456'], ['Marla', '+443456'], ['Denis', '+753456']], // for collision demonstrate
 };
 
-function getHash(str) {
-  let hash = '';
-  for (let i = 0; i < str.length; i++) {
-    hash += str.charCodeAt(i);
-  }
-  return Number(hash) % 1e6;
-}
-
 myMap.put = function(key, value) {
   const id = getHash(key);
   const inner = [key, value];
@@ -24,21 +16,32 @@ myMap.put = function(key, value) {
 };
 
 myMap.get = function(key) {
-  const id = getHash(key);
-  
+  const id = getHash(key);  
   if (id in myMap) {
-    for (let i = 0; i < myMap[id].length; i++) {
-
-      let innerKey = myMap[id][i][0];
-      let innerValue = myMap[id][i][1];
-
-      if (innerKey === key) {
-        return innerValue;
-      }
-    }
+    return getValue(myMap[id], key);    
   }
   return null;
 };
+
+
+function getHash(str) {
+  let hash = '';
+  for (let i = 0; i < str.length; i++) {
+    hash += str.charCodeAt(i);
+  }
+  return Number(hash) % 1e6;
+}
+
+function getValue(arr, key) {
+  for (let i = 0; i < arr.length; i++) {
+    if (arr[i][0] === key) {
+      return arr[i][1];
+    }    
+  }
+}
+
+
+
 
 myMap.put('Arsentiy', '+11111');
 myMap.put('Evgeny', '+33333');
